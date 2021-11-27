@@ -8,6 +8,10 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     console.log(selectedDates[0]);
+    let date = selectedDates[0];
+    if (date.getTime() < options.defaultDate.getTime()) {
+      window.alert('Please choose a date in the future');
+    }
   },
 };
 
@@ -30,7 +34,7 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
-const data = document.querySelector("#datetime-picker");
+const data = document.querySelector('#datetime-picker');
 
-flatpickr(data, options);
-
+let cos = flatpickr(data, options);
+console.log(options.defaultDate);
