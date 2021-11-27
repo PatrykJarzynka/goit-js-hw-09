@@ -1,5 +1,6 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import Notiflix from 'notiflix';
 
 const options = {
   enableTime: true,
@@ -9,7 +10,7 @@ const options = {
   onClose(selectedDates) {
     let date = selectedDates[0];
     if (date.getTime() < actuallTime) {
-      window.alert('Please choose a date in the future');
+        Notiflix.Notify.failure('Please choose a date in the future');
       return;
     }
     btn.removeAttribute('disabled');
