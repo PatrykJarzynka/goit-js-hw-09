@@ -9,9 +9,12 @@ const options = {
   onClose(selectedDates) {
     console.log(selectedDates[0]);
     let date = selectedDates[0];
-    if (date.getTime() < options.defaultDate.getTime()) {
+    if (date.getTime() < actuallTime) {
       window.alert('Please choose a date in the future');
+      return;
     }
+    btn.removeAttribute('disabled');
+    newTime = date.getTime();
   },
 };
 
@@ -35,6 +38,16 @@ function convertMs(ms) {
 }
 
 const data = document.querySelector('#datetime-picker');
+const btn = document.querySelector('button[data-start]');
+const actuallTime = options.defaultDate.getTime();
+let newTime = 0;
+let timerId = null;
 
 let cos = flatpickr(data, options);
-console.log(options.defaultDate);
+btn.setAttribute('disabled', true);
+btn.addEventListener('click', () => {
+  timerId = setInterval(() => {
+    console.log(convertMs(newTime - actuallTime));
+    newTime -= 1000;
+  }, 1000);
+});
