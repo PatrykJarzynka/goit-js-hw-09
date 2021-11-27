@@ -8,15 +8,30 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose(selectedDates) {
-    let date = selectedDates[0];
-    if (date.getTime() < actuallTime) {
-        Notiflix.Notify.failure('Please choose a date in the future');
-      return;
-    }
-    btn.removeAttribute('disabled');
-    newTime = date.getTime();
+    checkTime(selectedDates);
   },
 };
+
+const checkTime = array => {
+  let date = array[0];
+  if (date.getTime() < actuallTime) {
+    Notiflix.Notify.failure('Please choose a date in the future');
+    return;
+  }
+  btn.removeAttribute('disabled');
+  newTime = date.getTime();
+};
+
+const showTime = () => {
+    timerId = setInterval(() => {
+      let time = convertMs(newTime - actuallTime);
+      days.textContent = time.days;
+      hours.textContent = time.hours;
+      minutes.textContent = time.minutes;
+      seconds.textContent = time.seconds;
+      newTime -= 1000;
+    }, 1000);
+}
 
 function convertMs(ms) {
   const second = 1000;
@@ -44,13 +59,4 @@ let timerId = null;
 
 let cos = flatpickr(data, options);
 btn.setAttribute('disabled', true);
-btn.addEventListener('click', () => {
-  timerId = setInterval(() => {
-    let time = convertMs(newTime - actuallTime);
-    days.textContent = time.days;
-    hours.textContent = time.hours;
-    minutes.textContent = time.minutes;
-    seconds.textContent = time.seconds;
-    newTime -= 1000;
-  }, 1000);
-});
+btn.addEventListener('click', showTime);
